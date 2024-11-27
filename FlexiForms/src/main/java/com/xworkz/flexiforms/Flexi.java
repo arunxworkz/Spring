@@ -1,9 +1,10 @@
 package com.xworkz.flexiforms;
 
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class Flexi extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class Flexi extends AbstractAnnotationConfigDispatcherServletInitializer implements WebMvcConfigurer {
 
     public Flexi(){
         System.out.println("This is Flexi class");
@@ -32,5 +33,7 @@ public class Flexi extends AbstractAnnotationConfigDispatcherServletInitializer 
         System.out.println("Enable static resource handling by server itself...");
         configurer.enable();
     }
+
+
 
 }

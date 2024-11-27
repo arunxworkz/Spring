@@ -1,9 +1,10 @@
 package com.xworkx.taskflow;
 
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class Flow1 extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class Flow1 extends AbstractAnnotationConfigDispatcherServletInitializer implements WebMvcConfigurer {
 
     public Flow1(){
         System.out.println("This is TASKFLOW application");
@@ -27,6 +28,10 @@ public class Flow1 extends AbstractAnnotationConfigDispatcherServletInitializer 
         return urls;
     }
 
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
 
 
 
