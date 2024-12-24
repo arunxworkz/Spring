@@ -1,5 +1,6 @@
 package com.xworkz.xworkz_common_module_Arun.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,12 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.xworkz.xworkz_common_module_Arun")
+@Slf4j
+
 public class XworkzConfiguration {
 
     public XworkzConfiguration(){
-        System.out.println("Configuration class");
+        log.info("Configuration class");
     }
 
     @Bean
@@ -38,9 +41,10 @@ public class XworkzConfiguration {
 
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean(){
+        public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean(){
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setPackagesToScan("com.xworkz.xworkz_common_module_Arun.entity");
+        log.info("This is LocalContainerEntityMAnagerFactory");
         bean.setDataSource(dataSource());
         bean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         return bean;

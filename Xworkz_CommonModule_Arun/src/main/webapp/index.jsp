@@ -54,10 +54,29 @@
     .gap-2 {
       gap: 1rem;
     }
+    h1 {
+      font-size: 2.5rem;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      margin-bottom: 2rem;
+      animation: fadeInMove 2s ease-in-out;
+    }
+    @keyframes fadeInMove {
+      0% {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Title Section -->
+    <h1>Welcome to Xworkz</h1>
     <!-- Logo Section -->
     <div class="mb-4">
       <img src="https://x-workz.in/static/media/Logo.cf195593dc1b3f921369.png" alt="Xworkz Logo" class="logo-img">

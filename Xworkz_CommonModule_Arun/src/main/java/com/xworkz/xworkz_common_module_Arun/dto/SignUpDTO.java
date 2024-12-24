@@ -14,5 +14,4 @@ public class SignUpDTO {
     String phNo;
     String alPhNo;
     String location;
-
 }
