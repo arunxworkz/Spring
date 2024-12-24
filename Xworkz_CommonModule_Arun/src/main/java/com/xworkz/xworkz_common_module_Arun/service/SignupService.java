@@ -23,6 +23,6 @@ public interface SignupService {
 
 //    public String anotherSignIn(String email, String password);
 
-//    boolean saveEmail(String email , String password);
+    boolean saveEmail(String email , String password);
 
 }

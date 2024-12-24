@@ -3,11 +3,9 @@ package com.xworkz.xworkz_common_module_Arun.service;
 import com.xworkz.xworkz_common_module_Arun.dto.SignUpDTO;
 import com.xworkz.xworkz_common_module_Arun.entity.SignUpEntity;
 import com.xworkz.xworkz_common_module_Arun.repository.SignUpRepo;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -28,8 +26,6 @@ public class SignupServiceImpl implements SignupService{
     private final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
     private BCryptPasswordEncoder bcEncoder = new BCryptPasswordEncoder();
-
-
 
     @Autowired
     private SignUpRepo signUpRepo;
@@ -124,13 +120,30 @@ public class SignupServiceImpl implements SignupService{
         System.out.println("This is from Service for user existe or not");
         SignUpEntity entity = signUpRepo.onSignIn(email);
         System.out.println("entity is .."+entity);
-        if(entity !=null && bcEncoder.matches(password, entity.getPassword())){
+
+        if(entity == null){
+            return null;
+        }
+
+        if(entity.getLogin_count()==-1){
             return entity;
         }
-        return null;
+
+        if(entity.getLogin_count() > 3){
+            System.out.println("Account locked: "+email);
+            return null;
+        }
+
+        if(entity.getPassword().equals(password)){
+            entity.setLogin_count(0);
+            signUpRepo.onUpDate(entity);
+            return entity;
+        }else{
+            entity.setLogin_count(entity.getLogin_count() + 1);
+            signUpRepo.onUpDate(entity);
+            return null;
+        }
     }
-
-
 
     @Override
     public boolean onUpdate(String email, String newPasssword, String confirmPassword) {
@@ -152,49 +165,42 @@ public class SignupServiceImpl implements SignupService{
         return false;
     }
 
-//    @Override
-//    public boolean saveEmail(String email, String password) {
-//
-//
-//        final String username ="arunbelavadi30@gmail.com";
-//        final String userPassword = "pofd piik gyqx nzxd";
-//
-//        Properties prop = new Properties();
-//        prop.put("mail.smtp.host", "smtp.gmail.com");
-//        prop.put("mail.smtp.port", "587");
-//        prop.put("mail.smtp.auth", "true");
-//        prop.put("mail.smtp.starttls.enable", "true"); //TLS
-//
-//        Session session = Session.getInstance(prop,
-//                new javax.mail.Authenticator() {
-//                    protected PasswordAuthentication getPasswordAuthentication() {
-//                        return new PasswordAuthentication(username, userPassword);
-//                    }
-//                });
-//
-//        try {
-//
-//            Message message = new MimeMessage(session);
-//            message.setFrom(new InternetAddress(username));
-//            message.setRecipients(
-//                    Message.RecipientType.TO,
-//                    InternetAddress.parse(email)
-//            );
-//            message.setSubject("Your password");
-//            message.setText("your passwordd"+password);
-//
-//            Transport.send(message);
-//
-//            System.out.println("Done");
-//
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//
-//        return true;
-//    }
+    @Override
+    public boolean saveEmail(String email, String password) {
+        final String username ="arunbelavadi30@gmail.com";
+        final String userPassword = "pofd piik gyqx nzxd";
+
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, userPassword);
+                    }
+                });
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(email)
+            );
+            message.setSubject("Your password");
+            message.setText("your passwordd"+password);
+
+            Transport.send(message);
+
+            System.out.println("Done");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 
 //    @Override
 //    public String anotherSignIn(String email, String password) {

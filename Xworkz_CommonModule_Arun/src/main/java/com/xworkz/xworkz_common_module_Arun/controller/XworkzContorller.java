@@ -49,14 +49,19 @@ public class XworkzContorller {
         SignUpEntity str = signupService.onSignIn(email, password);
         System.out.println("User name is: " + str);
         System.out.println("in controller.." + str);
-        if(str!=null){
-            if(str.getLogin_count()==-1){
-                return "PasswordrReset";
-            }else if(str.getLogin_count() == 0){
-                return "Success";
-            }
+        if(str==null) {
+            return "Signin";
         }
-        return "PasswordReset";
+        if(str.getLogin_count()==-1) {
+            return "PasswordrReset";
+        }
+        if(str.getLogin_count() > 3){
+                return "Signin";
+        }
+        if(str.getLogin_count() == 0){
+            return "Success";
+        }
+        return "Signin";
     }
 
     @PostMapping("/updatePassword")
