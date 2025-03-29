@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Send Email</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e0f7fa; /* Light Cyan */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Form Container */
+        .container {
+            width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Heading */
+        .heading h1 {
+            font-size: 24px;
+            color: #00796b; /* Teal */
+            margin-bottom: 10px;
+        }
+
+        /* Form Inputs */
+        label {
+            display: block;
+            font-weight: bold;
+            text-align: left;
+            margin-top: 10px;
+            color: #004d40; /* Darker Teal */
+        }
+
+        input[type="email"], input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #b2dfdb; /* Light Teal */
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="email"]:focus, input[type="text"]:focus, input[type="file"]:focus {
+            border-color: #00796b; /* Teal */
+            outline: none;
+        }
+
+        /* Send Button */
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00796b; /* Teal */
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #004d40; /* Darker Teal */
+            transform: translateY(-2px);
+        }
+
+        /* Response Message */
+        #responseMessage {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #d32f2f; /* Red */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="heading">
+        <h1>Send the Mail</h1>
+    </div>
+
+    <form id="emailForm" action="/email/sendMail" method="post" enctype="multipart/form-data">
+        <label for="to">TO:</label>
+        <input name="to" id="to" type="email" placeholder="Enter recipient's Email" required>
+
+        <label for="message">Message:</label>
+        <input name="message" id="message" type="text" placeholder="Enter your message" required>
+
+        <label for="attachments">Attachments:</label>
+        <input name="attachments" id="attachments" type="file">
+
+        <button type="submit">Send Email</button>
+    </form>
+
+    <!-- Success/Error Message -->
+    <p id="responseMessage" th:text="${responseMessage}" th:style="'color:' + ${messageColor}"></p>
+</div>
+
+</body>
+</html>
